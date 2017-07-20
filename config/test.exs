@@ -1,4 +1,10 @@
-# Copyright (C) 2017 Recogizer Group GmbH - All Rights Reserved
-# Unauthorized copying of this file, via any medium is strictly prohibited
-# Proprietary and confidential
-# Created on 2017-07-20 10:08:54.
+use Mix.Config
+
+config :has_many_through, HasManyThrough.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "has_many_through_test",
+  username: "has_many_through",
+  password: "exs#exs456",
+  hostname: "has-many-through-postgres-s",
+  pool: Ecto.Adapters.SQL.Sandbox,
+  pool_size: 10
