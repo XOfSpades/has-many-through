@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :logger, level: :warn
+
 config :has_many_through, HasManyThrough.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "has_many_through_test",
