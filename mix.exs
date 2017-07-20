@@ -29,6 +29,7 @@ defmodule HasManyThrough.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:uuid, "~> 1.1"},
       {:postgrex, "~> 0.13.0"},
       {:ecto, "~> 2.1.3"}
     ]
