@@ -1,0 +1,41 @@
+version: '2'
+services:
+
+################################################################################
+########################## test related containers #############################
+################################################################################
+
+  has-many-through-postgres-s:
+    image: postgres:9.6.2
+    container_name: has-many-through-postgres-c
+    env_file:
+      - ./env.list
+    volumes:
+      - has-many-through-postgres-data-test-v:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - "has-many-through-n"
+
+  has-many-through-test-s:
+    image: xofspades/has-many-through-test-s:test0.0.1
+    container_name: has-many-through-test-c
+    build:
+      dockerfile: Dockerfile-test
+      context: .
+    command: mix do ecto.drop, ecto.create, ecto.migrate, test
+    environment:
+      - MIX_ENV=test
+    volumes:
+      - ./resources:/resources
+      - .:/app
+    depends_on:
+      - has-many-through-postgres-s
+    networks:
+      - "has-many-through-n"
+
+volumes:
+  has-many-through-postgres-data-test-v :
+
+networks:
+  has-many-through-n:

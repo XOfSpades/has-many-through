@@ -1,0 +1,36 @@
+FROM bitwalker/alpine-elixir:1.4.5
+
+MAINTAINER stoecki@der-ball-ist-rund.net
+
+RUN apk add --update bash gcc make && rm -rf /var/cache/apk/*
+
+EXPOSE 8080
+
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+RUN mkdir /application
+RUN mkdir /keys
+
+RUN chmod +wr /keys
+
+WORKDIR /application
+
+RUN mkdir /application/_build
+RUN mkdir -p /application/config
+RUN mkdir /application/lib
+
+COPY mix.exs /application/mix.exs
+COPY mix.lock /application/mix.lock
+
+RUN MIX_ENV=test mix do deps.get, deps.compile
+
+COPY config/config.exs /application/config/config.exs
+COPY config/test.exs /application/config/test.exs
+
+COPY priv /application/priv
+
+COPY lib /application/lib
+COPY test /application/test
+
+RUN MIX_ENV=test mix compile
